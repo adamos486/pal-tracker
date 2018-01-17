@@ -28,7 +28,16 @@ repositories {
 
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter')
-    compile('org.springframework.boot:spring-boot-starter-web')
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.3.5.Final'
+    compile group: 'org.springframework', name: 'spring-web'
+    compile group: 'org.springframework', name: 'spring-webmvc'
+    compile group: 'org.springframework', name: 'spring-core'
+    compile group: 'org.springframework.boot', name: 'spring-boot'
+    compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging'
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core'
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el'
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
