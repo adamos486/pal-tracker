@@ -17,7 +17,6 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
@@ -25,6 +24,14 @@ repositories {
     maven { url "https://repo.spring.io/snapshot" }
     maven { url "https://repo.spring.io/milestone" }
 }
+
+bootRun.environment([
+        "WELCOME_MESSAGE": "djibouti",
+])
+
+test.environment([
+        "WELCOME_MESSAGE": "Hello from test",
+])
 
 
 dependencies {
