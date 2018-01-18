@@ -46,5 +46,6 @@ dependencies {
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core'
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el'
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket'
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.1")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

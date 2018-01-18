@@ -1,8 +1,8 @@
 package test.pivotal.pal.tracker;
 
-import io.pivotal.pal.tracker.TimeEntry;
 import io.pivotal.pal.tracker.TimeEntryController;
-import io.pivotal.pal.tracker.TimeEntryRepository;
+import io.pivotal.pal.tracker.models.TimeEntry;
+import io.pivotal.pal.tracker.persistency.TimeEntryRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -38,6 +38,24 @@ public class TimeEntryControllerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isEqualTo(expected);
+    }
+
+    @Test
+    public void testAdditionalCreate() throws Exception {
+      TimeEntry expected = new TimeEntry(1L, 123, 456, LocalDate.parse("2017-01-08"), 8);
+      doReturn(expected)
+        .when(timeEntryRepository)
+        .create(any(TimeEntry.class));
+      ResponseEntity response = controller.create(new TimeEntry(123, 456, LocalDate.parse("2017-01-08"), 8));
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+      assertThat(response.getBody()).isEqualTo(expected);
+
+      //Test another round.
+//      expected = new TimeEntry(2L, 123, 456, LocalDate.parse("2017-01-08"), 8);
+      expected.setId(2L);
+      response = controller.create(new TimeEntry(123, 456, LocalDate.parse("2017-01-08"), 8));
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+      assertThat(response.getBody()).isEqualTo(expected);
     }
 
     @Test
