@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class WelcomeController {
+@RestController public class WelcomeController {
 
   private String message;
 
@@ -13,13 +12,11 @@ public class WelcomeController {
     this.message = message;
   }
 
-  @GetMapping("/")
-  public String sayHello() {
+  @GetMapping("/") public String sayHello() {
     return this.message;
   }
 
-  @GetMapping("/v1/something")
-  public String saySomething() {
+  @GetMapping("/v1/something") public String saySomething() {
     return "something";
   }
 }

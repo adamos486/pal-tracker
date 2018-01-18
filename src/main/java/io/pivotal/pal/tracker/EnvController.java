@@ -9,8 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-@RestController
-public class EnvController {
+@RestController public class EnvController {
 
   private final String port;
   private final String memoryLimit;
@@ -20,8 +19,10 @@ public class EnvController {
   private Map<String, String> envMap;
 
   //Test Constructor
-  public EnvController(@Value("${PORT:NOT SET}") String port, @Value("${MEMORY_LIMIT: NOT SET}") String memoryLimit,
-    @Value("${CF_INSTANCE_INDEX:NOT SET}") String cfInstanceIndex, @Value("${CF_INSTANCE_ADDR: NOT SET}") String cfInstanceAddress) {
+  public EnvController(@Value("${PORT:NOT SET}") String port,
+      @Value("${MEMORY_LIMIT: NOT SET}") String memoryLimit,
+      @Value("${CF_INSTANCE_INDEX:NOT SET}") String cfInstanceIndex,
+      @Value("${CF_INSTANCE_ADDR: NOT SET}") String cfInstanceAddress) {
     this.port = port;
     this.memoryLimit = memoryLimit;
     this.cfInstanceIndex = cfInstanceIndex;
@@ -34,8 +35,7 @@ public class EnvController {
     envMap.put("CF_INSTANCE_ADDR", cfInstanceAddress);
   }
 
-  @GetMapping("/env")
-  public Map<String, String> getEnv() {
+  @GetMapping("/env") public Map<String, String> getEnv() {
     Set<String> keys = envMap.keySet();
     for (String key : keys) {
       System.out.println("key:" + key + " " + envMap.get(key));

@@ -6,19 +6,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-public class TimeEntryController {
+@RestController public class TimeEntryController {
   private TimeEntryRepository repo;
 
   public TimeEntryController(TimeEntryRepository repo) {
     this.repo = repo;
   }
 
-  @PostMapping("/time-entries")
-  public ResponseEntity create(@RequestBody TimeEntry timeEntry) throws Exception {
+  @PostMapping("/time-entries") public ResponseEntity create(@RequestBody TimeEntry timeEntry)
+      throws Exception {
     try {
       TimeEntry created = repo.create(timeEntry);
       if (created.getId() != -1) {
@@ -32,22 +30,20 @@ public class TimeEntryController {
     }
   }
 
-  @GetMapping("/time-entries/{id}")
-  public ResponseEntity<TimeEntry> read(@PathVariable long id) {
+  @GetMapping("/time-entries/{id}") public ResponseEntity<TimeEntry> read(@PathVariable long id) {
     try {
       TimeEntry found = repo.find(id);
       if (found != null) {
         return new ResponseEntity<>(found, HttpStatus.OK);
       } else {
-        return new ResponseEntity<>(found, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>((TimeEntry) null, HttpStatus.NOT_FOUND);
       }
     } catch (Exception e) {
       throw e;
     }
   }
 
-  @GetMapping("/time-entries")
-  public ResponseEntity<List<TimeEntry>> list() {
+  @GetMapping("/time-entries") public ResponseEntity<List<TimeEntry>> list() {
     List<TimeEntry> entries = repo.list();
     return new ResponseEntity<>(entries, HttpStatus.OK);
   }
