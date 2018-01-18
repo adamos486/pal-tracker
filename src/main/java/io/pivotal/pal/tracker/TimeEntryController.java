@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -48,10 +49,7 @@ public class TimeEntryController {
   @GetMapping("/time-entries")
   public ResponseEntity<List<TimeEntry>> list() {
     List<TimeEntry> entries = repo.list();
-    if (entries.size() > 0) {
-      return new ResponseEntity<>(entries, HttpStatus.OK);
-    }
-    return new ResponseEntity<>(entries, HttpStatus.NO_CONTENT);
+    return new ResponseEntity<>(entries, HttpStatus.OK);
   }
 
   @PutMapping("/time-entries/{id}")
