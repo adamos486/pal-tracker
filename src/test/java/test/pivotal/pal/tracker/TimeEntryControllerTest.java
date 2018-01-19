@@ -3,19 +3,20 @@ package test.pivotal.pal.tracker;
 import io.pivotal.pal.tracker.TimeEntryController;
 import io.pivotal.pal.tracker.models.TimeEntry;
 import io.pivotal.pal.tracker.persistency.TimeEntryRepository;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class TimeEntryControllerTest {
   private TimeEntryRepository timeEntryRepository;
@@ -56,8 +57,6 @@ public class TimeEntryControllerTest {
   @Test public void testRead() throws Exception {
     TimeEntry expected = new TimeEntry(1L, 123, 456, LocalDate.parse("2017-01-08"), 8);
     doReturn(expected).when(timeEntryRepository).find(1L);
-
-
     
     ResponseEntity<TimeEntry> response = controller.read(1L);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

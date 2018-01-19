@@ -1,3 +1,5 @@
+import org.flywaydb.gradle.task.FlywayMigrateTask
+
 buildscript {
     ext {
         springBootVersion = '1.5.10.BUILD-SNAPSHOT'
@@ -10,6 +12,10 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
+}
+
+plugins {
+    id "org.flywaydb.flyway" version "4.2.0"
 }
 
 apply plugin: 'java'
@@ -27,10 +33,12 @@ repositories {
 
 bootRun.environment([
         "WELCOME_MESSAGE": "djibouti",
+        "SPRING_DATASOURCE_URL": "jdbc:mysql://localhost:3306/tracker_dev?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false",
 ])
 
 test.environment([
         "WELCOME_MESSAGE": "Hello from test",
+        "SPRING_DATASOURCE_URL": "jdbc:mysql://localhost:3306/tracker_test?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false",
 ])
 
 
@@ -47,5 +55,30 @@ dependencies {
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el'
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket'
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.1")
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+    compile("mysql:mysql-connector-java:6.0.6")
     testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+def developmentDbUrl = "jdbc:mysql://localhost:3306/tracker_dev?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"
+bootRun.environment([
+    "WELCOME_MESSAGE": "hello",
+    "SPRING_DATASOURCE_URL": developmentDbUrl,
+])
+
+def testDbUrl = "jdbc:mysql://localhost:3306/tracker_test?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"
+test.environment([
+    "WELCOME_MESSAGE": "Hello from test",
+    "SPRING_DATASOURCE_URL": testDbUrl,
+])
+
+flyway {
+    url = developmentDbUrl
+    user = "tracker"
+    password = ""
+    locations = ["filesystem:databases/tracker/migrations"]
+}
+
+task testMigrate(type: FlywayMigrateTask) {
+    url = testDbUrl
 }
