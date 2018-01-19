@@ -57,6 +57,8 @@ public class TimeEntryControllerTest {
     TimeEntry expected = new TimeEntry(1L, 123, 456, LocalDate.parse("2017-01-08"), 8);
     doReturn(expected).when(timeEntryRepository).find(1L);
 
+
+    
     ResponseEntity<TimeEntry> response = controller.read(1L);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(response.getBody()).isEqualTo(expected);
