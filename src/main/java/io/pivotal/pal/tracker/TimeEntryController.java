@@ -14,12 +14,13 @@ import java.util.List;
   private final GaugeService gauge;
   private final CounterService counter;
   private TimeEntryRepository repo;
-  private final String createdLabel = "TimeEntry.created";
-  private final String countedLabel = "TimeEntry.count";
-  private final String readLabel = "TimeEntry.read";
-  private final String listedLabel = "TimeEntry.listed";
-  private final String updatedLabel = "TimeEntry.updated";
-  private final String deleteLabel = "TimeEntry.delete";
+
+  private final String CREATED_LABEL = "TimeEntry.created";
+  private final String COUNTED_LABEL = "TimeEntry.count";
+  private final String READ_LABEL = "TimeEntry.read";
+  private final String LISTED_LABEL = "TimeEntry.listed";
+  private final String UPDATED_LABEL = "TimeEntry.updated";
+  private final String DELETE_LABEL = "TimeEntry.delete";
 
   public TimeEntryController(TimeEntryRepository repo, CounterService counter, GaugeService gauge) {
     this.repo = repo;
@@ -32,8 +33,8 @@ import java.util.List;
     try {
       TimeEntry created = repo.create(timeEntry);
       if (created.getId() != -1) {
-        counter.increment(createdLabel);
-        gauge.submit(countedLabel, repo.list().size());
+        counter.increment(CREATED_LABEL);
+        gauge.submit(COUNTED_LABEL, repo.list().size());
         return new ResponseEntity<>(created, HttpStatus.CREATED);
       } else {
         throw new Exception("Time Entry creation failed!!!");
@@ -48,7 +49,7 @@ import java.util.List;
     try {
       TimeEntry found = repo.find(id);
       if (found != null) {
-        counter.increment(readLabel);
+        counter.increment(READ_LABEL);
         return new ResponseEntity<>(found, HttpStatus.OK);
       } else {
         return new ResponseEntity<>((TimeEntry) null, HttpStatus.NOT_FOUND);
@@ -60,7 +61,7 @@ import java.util.List;
 
   @GetMapping("/time-entries") public ResponseEntity<List<TimeEntry>> list() {
     List<TimeEntry> entries = repo.list();
-    counter.increment(listedLabel);
+    counter.increment(LISTED_LABEL);
     return new ResponseEntity<>(entries, HttpStatus.OK);
   }
 
@@ -68,7 +69,7 @@ import java.util.List;
   public ResponseEntity update(@PathVariable long id, @RequestBody TimeEntry entry) {
     TimeEntry updated = repo.update(id, entry);
     if (updated == null) {
-      counter.increment(updatedLabel);
+      counter.increment(UPDATED_LABEL);
       return new ResponseEntity(null, HttpStatus.NOT_FOUND);
     }
     return new ResponseEntity<>(updated, HttpStatus.OK);
@@ -77,8 +78,8 @@ import java.util.List;
   @DeleteMapping("/time-entries/{id}")
   public ResponseEntity<TimeEntry> delete(@PathVariable long id) {
     boolean deleted = repo.delete(id);
-    counter.increment(deleteLabel);
-    gauge.submit(countedLabel, repo.list().size());
+    counter.increment(DELETE_LABEL);
+    gauge.submit(COUNTED_LABEL, repo.list().size());
     return new ResponseEntity<>(new TimeEntry(), HttpStatus.NO_CONTENT);
   }
 }
