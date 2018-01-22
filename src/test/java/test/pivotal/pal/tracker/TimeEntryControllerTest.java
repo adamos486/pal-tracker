@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.boot.actuate.metrics.CounterService;
+import org.springframework.boot.actuate.metrics.GaugeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,10 +23,14 @@ import static org.mockito.Mockito.verify;
 public class TimeEntryControllerTest {
   private TimeEntryRepository timeEntryRepository;
   private TimeEntryController controller;
+  private CounterService counter;
+  private GaugeService gauge;
 
   @Before public void setUp() throws Exception {
     timeEntryRepository = mock(TimeEntryRepository.class);
-    controller = new TimeEntryController(timeEntryRepository);
+    counter = mock(CounterService.class);
+    gauge = mock(GaugeService.class);
+    controller = new TimeEntryController(timeEntryRepository, counter, gauge);
   }
 
   @Test public void testCreate() throws Exception {
@@ -57,7 +63,7 @@ public class TimeEntryControllerTest {
   @Test public void testRead() throws Exception {
     TimeEntry expected = new TimeEntry(1L, 123, 456, LocalDate.parse("2017-01-08"), 8);
     doReturn(expected).when(timeEntryRepository).find(1L);
-    
+
     ResponseEntity<TimeEntry> response = controller.read(1L);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(response.getBody()).isEqualTo(expected);

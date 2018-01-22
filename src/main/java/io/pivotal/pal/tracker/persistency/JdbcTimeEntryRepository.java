@@ -59,10 +59,7 @@ public class JdbcTimeEntryRepository implements TimeEntryRepository {
   }
 
   @Override public boolean delete(long id) {
-    int result = jdbcTemplate.update(
-        "DELETE FROM time_entries WHERE id=?",
-        id
-    );
+    int result = jdbcTemplate.update("DELETE FROM time_entries WHERE id=?", id);
     return result > 0;
   }
 
