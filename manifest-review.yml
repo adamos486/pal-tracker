@@ -5,3 +5,5 @@ applications:
   host: ps-pal-tracker-review-agcjd
   services:
   - tracker-database
+  env:
+    SECURITY_FORCE_HTTPS: true
